@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Seleção de Cor em Imagem</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css">
+</head>
+<body>
+  <div>
+    <img id="imagem" src="monalisa.jpg">
+  </div>
+  <div>
+    <button id="selecionar">Selecionar Área</button>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <div id="cor"></div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+  <script>
+    var imagem = document.getElementById('imagem');
+    var canvas = document.getElementById('canvas');
+    var corDiv = document.getElementById('cor');
+    var cropper = new Cropper(imagem, {
+      aspectRatio: NaN,
+      crop: function(event) {
+        canvas.width = event.detail.width;
+        canvas.height = event.detail.height;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(imagem, event.detail.x, event.detail.y, event.detail.width, event.detail.height, 0, 0, event.detail.width, event.detail.height);
+        var colorThief = new ColorThief();
+        var corRGB = colorThief.getColor(canvas);
+        var corHex = rgbToHex(corRGB);
+        corDiv.style.backgroundColor = corHex;
+        corDiv.innerHTML = corHex;
+      }
+    });
+    var selecionarBotao = document.getElementById('selecionar');
+    selecionarBotao.addEventListener('click', function() {
+      cropper.crop();
+    });
+    function rgbToHex(cor) {
+      return "#" + ((1 << 24) + (cor[0] << 16) + (cor[1] << 8) + cor[2]).toString(16).slice(1);
+    }
+  </script>
+</body>
+</html>
