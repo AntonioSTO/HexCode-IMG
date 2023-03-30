@@ -27,16 +27,14 @@
         var ctx = canvas.getContext('2d');
         ctx.drawImage(imagem, event.detail.x, event.detail.y, event.detail.width, event.detail.height, 0, 0, event.detail.width, event.detail.height);
         var colorThief = new ColorThief();
-        var corRGB = colorThief.getColor(canvas);
-        var corHex = rgbToHex(corRGB);
-        corDiv.style.backgroundColor = corHex;
-        corDiv.innerHTML = corHex;
-      }
+        if (canvas.width > 0 && canvas.height > 0) {
+          var corRGB = colorThief.getColor(canvas);
+          var corHex = rgbToHex(corRGB);
+          corDiv.style.backgroundColor = corHex;
+          corDiv.innerHTML = corHex;
+      }}
     });
-    var selecionarBotao = document.getElementById('selecionar');
-    selecionarBotao.addEventListener('click', function() {
-      cropper.crop();
-    });
+    
     function rgbToHex(cor) {
       return "#" + ((1 << 24) + (cor[0] << 16) + (cor[1] << 8) + cor[2]).toString(16).slice(1);
     }
