@@ -16,27 +16,30 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
   <script>
-    var imagem = document.getElementById('imagem');
-    var canvas = document.getElementById('canvas');
-    var corDiv = document.getElementById('cor');
-    var cropper = new Cropper(imagem, {
-      aspectRatio: NaN,
-      crop: function(event) {
-        canvas.width = event.detail.width;
-        canvas.height = event.detail.height;
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(imagem, event.detail.x, event.detail.y, event.detail.width, event.detail.height, 0, 0, event.detail.width, event.detail.height);
-        var colorThief = new ColorThief();
-        if (canvas.width > 0 && canvas.height > 0) {
-          var corRGB = colorThief.getColor(canvas);
-          var corHex = rgbToHex(corRGB);
-          corDiv.style.backgroundColor = corHex;
-          corDiv.innerHTML = corHex;
-      }}
-    });
-    
-    function rgbToHex(cor) {
-      return "#" + ((1 << 24) + (cor[0] << 16) + (cor[1] << 8) + cor[2]).toString(16).slice(1);
+    window.onload = function() {
+      var imagem = document.getElementById('imagem');
+      var canvas = document.getElementById('canvas');
+      var corDiv = document.getElementById('cor');
+      var cropper = new Cropper(imagem, {
+        aspectRatio: NaN,
+        crop: function(event) {
+          canvas.width = event.detail.width;
+          canvas.height = event.detail.height;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(imagem, event.detail.x, event.detail.y, event.detail.width, event.detail.height, 0, 0, event.detail.width, event.detail.height);
+          var colorThief = new ColorThief();
+          if (canvas.width > 0 && canvas.height > 0) {
+            var corRGB = colorThief.getColor(canvas);
+            var corHex = rgbToHex(corRGB);
+            corDiv.style.backgroundColor = corHex;
+            corDiv.innerHTML = corHex;
+          }
+        }
+      });
+      
+      function rgbToHex(cor) {
+        return "#" + ((1 << 24) + (cor[0] << 16) + (cor[1] << 8) + cor[2]).toString(16).slice(1);
+      }
     }
   </script>
 </body>
